@@ -1,33 +1,61 @@
-function gen_table(){
-    document.getElementById("tab").innerHTML="";
-    let n=Number(document.getElementById("capital").value);
-    let n2=Number(document.getElementById("couta").value);
-    let n3=Number(document.getElementById("interes").value);
-    if(n>0){   
-        for(i=1;i<=n2;i++){
-            ca=n/n2;
-            d1=ca.toFixed(2);
-            i2=((n*n3)/100)/n2;
-            d2=i2.toFixed(2);
-            r=ca+i2;
-            d3=r.toFixed(2);
-            document.getElementById("tab").innerHTML=document.getElementById("tab").innerHTML+
-                    `<tr>
-                        <td> ${i}</td>
-                        <td> ${d1}</td>
-                        <td> ${d2}</td>
-                        <td> ${d3}</td>
-                    </tr>`;
-        }
-        n1=n.toFixed(2);
-        t_i=i2*n2;
-        d4=t_i.toFixed(2);
-        t_p=r*n2;
-        d5=t_p.toFixed(2);
-        document.getElementById("t1").innerHTML=n1;
-        document.getElementById("t2").innerHTML=d4;
-        document.getElementById("t3").innerHTML=d5;        
-    }else{
-        alert("No hay numero ingresado");
-    }
+const catalogo = [
+    {id:1, nombre:"Florero", precio: 1300},
+    {id:2, nombre:"Mesa", precio: 4500},
+    {id:3, nombre:"Silla de plastico", precio: 2000},
+    {id:4, nombre:"Silla ergonomica", precio: 3100},
+    {id:5, nombre:"Mesa de plastico", precio: 3000},
+    {id:6, nombre:"Copa del mundo", precio: 10}
+]
+const carrito = [];
+
+
+let producto;
+let lecturaObjetos;
+
+let confirmarProducto = true;
+
+
+const buscarCatalogo = (id)=>{
+    return catalogo.find(item => item.id === id);
 }
+
+
+while(confirmarProducto){
+
+    lecturaObjetos = parseInt(prompt("Escriba un numero segundo el producto que desea: " + catalogo.map(item=> "\n" +item.id + " - " + item.nombre + " $" + item.precio + "\n").join(" - ")));
+    if(lecturaObjetos >= 1 && lecturaObjetos <= 6){
+
+        producto = buscarCatalogo(lecturaObjetos);
+        confirmarProducto = confirm("¿Lleva algo mas?");
+    }else{
+        alert("El número ingresado es inválido");
+    }
+    carrito.push(producto);
+}console.log(carrito);
+
+confirmarProducto = true;
+
+let productoRemovido;
+
+let lecturaProductos;
+
+const buscarCarrito = (id)=>{
+    return carrito.find(item => item.id === id);
+}
+
+let gastoTotal = 0;
+
+while(confirmarProducto){
+    lecturaProductos = parseInt(prompt("Si deseas eliminar algún producto, escriba el numero del producto: " + "\n" + "Estas comprando: \n" + carrito.map(item=> "\n" +item.id + " - " + item.nombre + " $" + item.precio + "\n").join(" - ")));
+    if(lecturaProductos>=1 && lecturaProductos <= 6){
+        productoRemovido = buscarCarrito(lecturaProductos);
+        carrito.splice(((productoRemovido.id)-1),1);
+    }else{
+        alert("Ingrese un numero valido");
+    }
+    confirmarProducto = confirm("¿Desea eliminar algo mas?");
+}console.log(carrito);
+
+for(productos of carrito){
+    gastoTotal += productos.precio;
+}alert("Gasto Total: $" + gastoTotal);
